@@ -1,5 +1,5 @@
 import subprocess
-from src.notify_send import notify
+from src.utils.notify_send import notify
 
 
 def copy_to_clipboard(content: str) -> None:
