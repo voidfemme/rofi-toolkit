@@ -1,5 +1,5 @@
 # src/nvim_keymaps.py
-from config import NK_CACHE_FILE, NK_ROFI_CACHE_FILE, NK_SOCKET_PATH
+from src.config import NK_CACHE_FILE, NK_ROFI_CACHE_FILE, NK_SOCKET_PATH
 from rofi import Rofi
 from src.utils.notify_send import notify
 import os

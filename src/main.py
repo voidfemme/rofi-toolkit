@@ -8,7 +8,6 @@ from rofi import Rofi
 from src.utils.notify_send import notify
 
 logging.basicConfig(
-    level=logging.DEBUG,
     stream=sys.stdout,
     format="%(name)s - %(levelname)s - %(message)s",
 )
@@ -30,6 +29,7 @@ def main():
         sys.exit(1)
 
     parser = argparse.ArgumentParser(description="Rofi Multitool")
+    parser.add_argument("-v", "--verbose", action="store_true")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     subparsers.add_parser("bluetooth")
@@ -52,6 +52,12 @@ def main():
     args = parser.parse_args()
 
     rofi = Rofi()
+
+    # Verbose mode:
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+    else:
+        logging.getLogger().setLevel(logging.WARNING)
 
     match args.command:
         case "bluetooth":
