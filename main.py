@@ -37,6 +37,7 @@ def main():
     subparsers.add_parser("nether")
     subparsers.add_parser("logical-operators")
     subparsers.add_parser("operator-info")
+    subparsers.add_parser("update")
 
     recents_parser = subparsers.add_parser("recents")
     recents_parser.add_argument("-n", "--count", type=int, default=10, metavar="N")
@@ -88,6 +89,23 @@ def main():
                 json_output=args.json,
                 list_only=args.list,
             )
+        case "update":
+            import subprocess
+            from pathlib import Path
+
+            # __file__ is main.py, so .parent is the project root
+            project_root = Path(__file__).parent
+            pull = subprocess.run(
+                ["git", "pull"], cwd=project_root, capture_output=True, text=True
+            )
+            if pull.returncode == 0:
+                subprocess.run(
+                    ["pip", "install", "-e", ".", "--break-system-packages"],
+                    cwd=project_root,
+                )
+            else:
+                print(pull.stderr, file=sys.stderr)
+            sys.exit(pull.returncode)
 
 
 if __name__ == "__main__":

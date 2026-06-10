@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "rofi-toolkit"
+version = "0.0.1-alpha"
+description = "A unified rofi menu launcher"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+dependencies = [
+    "python-rofi"
+]
+
+[project.scripts]
+rofi-toolkit = "main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
