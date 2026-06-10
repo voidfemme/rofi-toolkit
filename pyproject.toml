@@ -9,7 +9,8 @@ description = "A unified rofi menu launcher"
 requires-python = ">=3.10"
 license = { file = "LICENSE" }
 dependencies = [
-    "python-rofi"
+    "python-rofi",
+    "argcomplete",
 ]
 
 [project.scripts]
