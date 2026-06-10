@@ -2,6 +2,7 @@
 from rofi import Rofi
 from src.config import DEPENDENCIES
 from src.utils.notify_send import notify
+import argcomplete
 import argparse
 import logging
 import shutil
@@ -47,6 +48,7 @@ def main():
     keymaps_parser.add_argument("-j", "--json", action="store_true")
     keymaps_parser.add_argument("-l", "--list", action="store_true")
 
+    argcomplete.autocomplete(parser)
     args = parser.parse_args()
 
     rofi = Rofi()
