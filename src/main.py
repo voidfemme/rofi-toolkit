@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
+from rofi import Rofi
+from src.config import DEPENDENCIES
+from src.utils.notify_send import notify
 import argparse
 import logging
 import shutil
 import sys
-from rofi import Rofi
-
-from src.utils.notify_send import notify
 
 logging.basicConfig(
     stream=sys.stdout,
@@ -23,9 +23,7 @@ def check_dependencies(programs: list[str]) -> bool:
 
 
 def main():
-    if not check_dependencies(
-        ["rofi", "wl-copy", "bluetoothctl", "nvim", "notify-send", "xdg-open"]
-    ):
+    if not check_dependencies(DEPENDENCIES):
         sys.exit(1)
 
     parser = argparse.ArgumentParser(description="Rofi Multitool")
@@ -100,7 +98,7 @@ def main():
             from pathlib import Path
 
             # __file__ is main.py, so .parent is the project root
-            project_root = Path(__file__).parent
+            project_root = Path(__file__).parent.parent
             pull = subprocess.run(
                 ["git", "pull"], cwd=project_root, capture_output=True, text=True
             )

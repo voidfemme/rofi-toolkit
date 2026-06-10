@@ -1,6 +1,14 @@
 # config.py
 import os
 
+DEPENDENCIES = [
+    "rofi",
+    "wl-copy",
+    "bluetoothctl",
+    "nvim",
+    "notify-send",
+    "xdg-open",
+]
 BLUETOOTH_SCAN_TIME = 5
 BLUETOOTH_SHOW_SAVED = True
 BLUETOOTH_SHOW_SCANNED = True
