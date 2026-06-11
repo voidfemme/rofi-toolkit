@@ -1,3 +1,4 @@
+import subprocess
 from rofi import Rofi
 from src.utils.notify_send import notify
 from src.utils.utils import copy_to_clipboard
@@ -53,48 +54,25 @@ def calculate(args: list[str]) -> list[str]:
         else:
             return [evaluate_expression(sys.argv[0])]
     else:
-        return ["Usage\nUsage: calculator <expression> or --history"]
+        return ["Usage\nUsage: calculator [expression] or --history"]
 
 
-def calculator_menu(rofi: Rofi):
-    while True:
-        history = calculate(["--history"])
+def calculator_menu(_: Rofi = Rofi()):
+    history = calculate(["--history"])
 
-        options = history + [":Calculate"]
-        index, _ = rofi.select("Calculator:", options)
-        if index == -1:
-            sys.exit(0)
-        expression = options[index]
+    options_str = "\n".join(history)
 
-        if expression == ":Calculate":
-            expression = rofi.text_entry("Calculate:")
-        elif "=" in expression:
-            expression = history[index].split("=")[0].strip()
+    rofi_result = subprocess.run(
+        ["rofi", "-dmenu", "-p", "Calculator:", "-format", "s"],
+        input=options_str,
+        capture_output=True,
+        text=True,
+    )
+    expression = rofi_result.stdout
 
-        logger.debug(f"Expression to evaluate: {expression}")
+    result = evaluate_expression(expression)
 
-        if isinstance(expression, str):
-            result = calculate([expression])
-        else:
-            result = None
+    logger.debug(f"raw result from calculate(): {result}")
 
-        logger.debug(f"raw result from calculate(): {result}")
-
-        if result is None:
-            notify("Calculator Error", "No output from calculation")
-            continue
-
-        # Display results in rofi and get user selection
-        selection = rofi.text_entry("Result (Enter to copy):", result[0])
-
-        logger.debug(f"User selection: {selection}")
-
-        if selection is None:
-            continue
-
-        copy_to_clipboard(selection)
-
-        continue_calc = rofi.select("Continue calculating?", ["yes", "no"])
-
-        if continue_calc[0] != 0:
-            break
+    copy_to_clipboard(result)
+    sys.exit(0)
